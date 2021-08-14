@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+option go_package = "github.com/FireMasterK/youtube-protos/youtubeprotos";
+
+message ClientInfo {
+    string hl = 1; // fixme?
+    string gl = 2; // fixme?
+    Client clientName = 16;
+    string clientVersion = 17;
+}
+
+enum Client {
+    UNKNOWN = 0;
+    ANDROID = 3;
+    IOS = 5;
+    ANDROID_TV = 23;
+    MANGO_ANDROID = 38;
+}
+
+message Context {
+    ClientInfo client = 1;
+}
+
+message PlayerRequest {
+    Context context = 1;
+    string videoId = 2;
+}
+
+message PlayerResponse {
+    StreamingData streamingData = 4;
+    VideoDetails videoDetails = 11;
+}
+
+message StreamingData {
+    int32 expiresInSeconds = 1;
+    repeated StreamFormat formats = 2;
+    repeated StreamFormat adaptiveFormats = 3;
+}
+
+message StreamFormat {
+    int32 itag = 1;
+    string url = 2;
+    string mimeType = 5;
+    int32 bitrate = 6;
+    int32 width = 7;
+    int32 height = 8;
+    Range initRange = 9;
+    Range indexRange = 10;
+    int64 lastModified = 11;
+    int64 contentLength = 12;
+    string quality = 16;
+    int32 fps = 25;
+    string qualityLabel = 26;
+    int64 approxDurationMs = 44;
+}
+
+message Range {
+    int32 start = 3;
+    int32 end = 4;
+}
+
+message VideoDetails {
+    string videoId = 1;
+    string title = 15;
+    int32 lengthSeconds = 16;
+    repeated string keywords = 18;
+    string channelId = 19;
+    bool isOwnerViewing = 20;
+    string shortDescription = 21;
+    bool isCrawlable = 22;
+    repeated Thumbnails thumbnail = 25;
+    float averageRating = 30;
+    bool allowRatings = 31;
+    int64 viewCount = 32;
+    string author = 33;
+    bool isPrivate = 37;
+    bool isUnpluggedCorpus = 38;
+    bool isLiveContent = 41;
+}
+
+message Thumbnails {
+    message Thumbnail {
+        string url = 1;
+        int32 width = 2;
+        int32 height = 3;
+    }
+    repeated Thumbnail thumbnail = 1;
+}
+
+message NextRequest {
+    Context context = 1;
+    string videoId = 2;
+}
+
+// TODO: parse response
+
+
+// TODO: add more fields
+message ReelsRequest {
+    Context context = 1;
+    string videoId = 2;
+    string params = 3;
+}
